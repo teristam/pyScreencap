@@ -11,7 +11,9 @@ from skimage import io as sio
 from reportlab.platypus import *
 from reportlab.lib.units import inch
 from reportlab.lib.pagesizes import *
-
+from pathlib import Path
+import subprocess
+import platform
 
 def load_images(folder, progressbar=None):
     n = len(glob.glob(f"{folder}/*.png"))
@@ -33,6 +35,7 @@ def load_images(folder, progressbar=None):
 
 
 def analyze_slide_change(images):
+    imageList = np.arange(len(images))
     # calculate differences between images
     imFlatten = images.reshape(-1, images.shape[1] * images.shape[2])
     imDiff = np.diff(imFlatten, axis=0)
@@ -59,21 +62,29 @@ def analyze_slide_change(images):
     return imageList_change
 
 
-def build_slide_pdf(imageList, filename):
+def build_slide_pdf(imageList,base_folder, filename):
 
-    doc = SimpleDocTemplate(f"data/{chapter}.pdf")
+    doc = SimpleDocTemplate(base_folder+'/'+filename)
     doc.pagesize = landscape(A4)
 
     story = []
-    width = 9.5 * inch
+    width = 10 * inch
     height = width * 1080 / 1920
-    for i in imageList_change:
-        im = Image(f"data/{chapter}/{i}.png", width, height)
+    for i in imageList:
+        im = Image(f"{base_folder}/{i}.png", width, height)
         story.append(im)
         story.append(PageBreak())
 
     doc.build(story)
 
+
+def open_file(filepath):
+    if platform.system() == 'Darwin':       # macOS
+        subprocess.call(('open', filepath))
+    elif platform.system() == 'Windows':    # Windows
+        os.startfile(filepath)
+    else:                                   # linux variants
+        subprocess.call(('xdg-open', filepath))
 
 layout = [
     [sg.Image("0.png", key="screenshot")],
@@ -87,7 +98,7 @@ layout = [
         sg.Button("Record", key="recordBtn"),
         sg.Text("0", key="imgIdx"),
     ],
-    [sg.ProgressBar(100, key="progressbar", size=(5, 1))],
+    [sg.Text('Analyzis progress',key='progressText'),sg.ProgressBar(100, key="progressbar", size=(5, 1))],
 ]
 
 window = sg.Window(
@@ -124,7 +135,24 @@ while True:
             timeout = None
 
     if event == "analyze":
-        image_list = load_images(values["folderPath"], window["progressbar"])
+        window['progressText'].update('Loading images')
+        images = load_images(values["folderPath"], window["progressbar"])
+
+        folderPath = values['folderPath']
+
+        window['progressText'].update('Analyzing images')
+        image_list = analyze_slide_change(images)
+        filename = Path(folderPath).name + '.pdf'
+
+        window['progressText'].update('Building PDF')
+        build_slide_pdf(image_list, folderPath,filename)
+
+        window['progressText'].update('Finished')
+
+        open_file(folderPath+'/'+filename)
+
+        
+
 
     if record:
         # Do a screen shot when the delay time has reached
