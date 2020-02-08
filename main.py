@@ -7,7 +7,7 @@ import numpy as np
 from tqdm import tqdm
 import matplotlib.pylab as plt
 
-chapter = 'chap27'
+chapter = 'chap28'
 
 #%% Recoding screen
 
@@ -92,4 +92,7 @@ for i in imageList_change:
     story.append(PageBreak())
 
 doc.build(story)
+# %%
+
+
 # %%
