@@ -96,8 +96,10 @@ layout = [
         sg.Button("Analyze", key="analyze"),
     ],
     [
-        sg.Input(5, key="delayTime"),
+        sg.Text('Capture frequency (s): '),
+        sg.Input(5, key="delayTime", size=(3,1),justification='center'),
         sg.Button("Record", key="recordBtn"),
+        sg.Text('Current capture index:'),
         sg.Text("0", key="imgIdx"),
     ],
     [sg.Text('Analyze progress',key='progressText'),sg.ProgressBar(100, key="progressbar", size=(5, 1))],
