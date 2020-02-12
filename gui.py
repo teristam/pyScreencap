@@ -100,7 +100,7 @@ layout = [
         sg.Button("Record", key="recordBtn"),
         sg.Text("0", key="imgIdx"),
     ],
-    [sg.Text('Analyzis progress',key='progressText'),sg.ProgressBar(100, key="progressbar", size=(5, 1))],
+    [sg.Text('Analyze progress',key='progressText'),sg.ProgressBar(100, key="progressbar", size=(5, 1))],
 ]
 
 window = sg.Window(
