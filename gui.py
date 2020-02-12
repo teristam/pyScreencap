@@ -1,19 +1,21 @@
+print('Python code starting...')
+
 import PySimpleGUIQt as sg
 import pyscreenshot as ImageGrab
 import time
 import glob
 import skimage as ski
 import numpy as np
-import matplotlib.pylab as plt
 from io import BytesIO
 from skimage import transform
 from skimage import io as sio
-from reportlab.platypus import *
+from reportlab.platypus import SimpleDocTemplate, Image, PageBreak
 from reportlab.lib.units import inch
-from reportlab.lib.pagesizes import *
+from reportlab.lib.pagesizes import landscape,A4
 from pathlib import Path
 import subprocess
 import platform
+
 
 def load_images(folder, progressbar=None):
     n = len(glob.glob(f"{folder}/*.png"))
@@ -89,12 +91,12 @@ def open_file(filepath):
 layout = [
     [sg.Image("0.png", key="screenshot")],
     [
-        sg.Input("data/chap28", key="folderPath", size=(50, 0.5)),
+        sg.Input("./data/chap28", key="folderPath", size=(50, 0.5)),
         sg.FolderBrowse(initial_folder=".", key="browseFolder", target="folderPath"),
         sg.Button("Analyze", key="analyze"),
     ],
     [
-        sg.Input(2, key="delayTime"),
+        sg.Input(5, key="delayTime"),
         sg.Button("Record", key="recordBtn"),
         sg.Text("0", key="imgIdx"),
     ],
