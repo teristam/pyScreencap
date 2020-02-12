@@ -4,7 +4,12 @@ Python script to capture online video slide show and convert it to PDF. The scri
 ![screeshot](doc/screenshot.png)
 
 
+### Depedency
+- scikit-image, pyscreenshot, reportlab
+
+
 ### Usage
+- run `python PyScreencap.py`
 - Click 'Browse' button to specify the image save location
 - Specify the capture frequency
 - Click 'Record' to start recording. During recording, the latest-captured screenshot will be shown
