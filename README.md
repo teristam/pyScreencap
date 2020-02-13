@@ -6,7 +6,7 @@ Python script to capture online video slide show and convert it to PDF. The scri
 
 ### Depedencies
 - scikit-image, pyscreenshot, reportlab
-- It uses a modified version of [PySimpleGUI](https://pysimplegui.readthedocs.io/en/latest/) for display native Qt widgets
+- It uses a modified version of [PySimpleGUI](https://pysimplegui.readthedocs.io/en/latest/) for displaying native Qt widgets
 
 
 ### Usage
